@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -19,15 +17,15 @@ public class CurrencyExchangeController {
     @Autowired
     private Environment environment;
 
-    @GetMapping("/currency-exchange/from/{from}/to/{to}")
-    public CurrencyExchange retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
+    @PostMapping("/currency-exchange")
+    public CurrencyExchange retrieveExchangeValue(@RequestBody CurrencyExchange exchange) {
 
-        log.info("retrieveExchangeValue called with {} to {}", from, to);
+        log.info("retrieveExchangeValue called with {} to {}", exchange.getFrom(), exchange.getTo());
 
-        CurrencyExchange currencyExchange = repository.findByFromAndTo(from, to);
+        CurrencyExchange currencyExchange = repository.findByFromAndTo(exchange.getFrom(), exchange.getTo());
 
         if (currencyExchange == null) {
-            throw new RuntimeException("Unable to Find data for " + from + " to " + to);
+            throw new RuntimeException("Unable to Find data for " + exchange.getFrom() + " to " + exchange.getTo());
         }
 
         String port = environment.getProperty("local.server.port");

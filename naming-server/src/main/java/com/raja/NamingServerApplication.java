@@ -1,4 +1,4 @@
-package com.raja.namingserver;
+package com.raja;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
